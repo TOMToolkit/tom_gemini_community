@@ -14,11 +14,15 @@ setuptools.setup(
     url="https://github.com/TOMToolkit/tom_gemini_community",
     packages=setuptools.find_packages(),
     classifiers=[
-        "Programming Language :: Python",
         "Intended Audience :: Science/Research",
-        "",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.7',
+        'Topic :: Scientific/Engineering :: Astronomy',
+        'Topic :: Scientific/Engineering :: Physics'
     ],
+    keywords=['tomtoolkit', 'astronomy', 'astrophysics', 'cosmology', 'science', 'fits', 'observatory', 'gemini'],
     install_requires=[
         'tomtoolkit',
         'gsselect'
