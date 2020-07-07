@@ -1,4 +1,4 @@
-# Gemini Observatory Community TOM Broker Modules
+# Gemini Observatory Community TOM Modules
 
 The [TOM Toolkit](https://github.com/TOMToolkit) comes with a basic module for 
 submitting observations to the [Gemini Observatory](https://www.gemini.edu/) Phase 2 
