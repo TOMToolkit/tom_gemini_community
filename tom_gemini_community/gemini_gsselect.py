@@ -226,15 +226,15 @@ class GEMObservationForm(BaseRoboticObservationForm):
                                 max_value=360.,
                                 required=False,
                                 initial=0.0,
-                                label='Position Angle [0-360]')
+                                label='Position Angle')
 
-    exptimes = forms.CharField(required=False, label='Exptime [s], comma separate')
+    exptimes = forms.CharField(required=False, label='Exptime(s) [s]')
 
     group = forms.CharField(required=False, label='Group Name')
     notetitle = forms.CharField(required=False, initial='Finding Chart', label='Note Title')
     note = forms.CharField(required=False, label='Note Text')
 
-    eltype = forms.ChoiceField(required=False, label='Airmass/Hour Angle Constraint',
+    eltype = forms.ChoiceField(required=False, label='Airmass/Hour Angle',
                                choices=(('none', 'None'), ('airmass', 'Airmass'), ('hourAngle', 'Hour Angle')))
     elmin = forms.FloatField(required=False, min_value=-5.0, max_value=5.0, label='Min Airmass/HA', initial=1.0)
     elmax = forms.FloatField(required=False, min_value=-5.0, max_value=5.0, label='Max Airmass/HA', initial=2.0)
@@ -245,11 +245,11 @@ class GEMObservationForm(BaseRoboticObservationForm):
     gsbrightness = forms.FloatField(required=False, label='Guide Star Brightness')
     gsbrightness_system = forms.ChoiceField(required=False,
                                             initial='Vega',
-                                            label='Guide Star Brightness System',
+                                            label='Brightness System',
                                             choices=(('Vega', 'Vega'), ('AB', 'AB'), ('Jy', 'Jy')))
     gsbrightness_band = forms.ChoiceField(required=False,
                                           initial='UC',
-                                          label='Guide Star Brightness Band',
+                                          label='Brightness Band',
                                           choices=(('UP', 'u'), ('U', 'U'), ('B', 'B'), ('GP', 'g'), ('V', 'V'),
                                                    ('UC', 'UC'), ('RP', 'r'), ('R', 'R'), ('IP', 'i'), ('I', 'I'),
                                                    ('ZP', 'z'), ('Y', 'Y'), ('J', 'J'), ('H', 'H'), ('K', 'K'),
@@ -262,8 +262,8 @@ class GEMObservationForm(BaseRoboticObservationForm):
                                          ('PWFS2', 'PWFS2'),
                                          ('AOWFS', 'AOWFS')))  # GS probe (PWFS1/PWFS2/OIWFS/AOWFS)
     window_start = forms.CharField(required=False, widget=forms.TextInput(attrs={'type': 'date'}),
-                                   label='Timing Window [Date Time]')
-    window_duration = forms.IntegerField(required=False, min_value=1, label='Timing Window Duration [hr]')
+                                   label='Timing Window')
+    window_duration = forms.IntegerField(required=False, min_value=1, label='Window Duration [hr]')
 
     # Fields needed for running parangle/gsselect
     pamode = forms.ChoiceField(required=False,
@@ -274,7 +274,7 @@ class GEMObservationForm(BaseRoboticObservationForm):
                                         ('parallactic', 'Parallactic Angle')))
     obsdate = forms.CharField(required=False,
                               widget=forms.TextInput(attrs={'type': 'date'}),
-                              label='UT Date Time for Parallactic')
+                              label='UT DateTime (Par)')
     # Eventually select instrument from obsid text?
     inst = forms.ChoiceField(required=False,
                              label='Instrument',
@@ -293,7 +293,7 @@ class GEMObservationForm(BaseRoboticObservationForm):
                             label='IFU Mode',
                             choices=(('none', 'None'), ('two', 'Two Slit'), ('red', 'One Slit Red')))
     overwrite = forms.ChoiceField(required=False,
-                                  label='Overwrite previous query?',
+                                  label='Overwrite previous?',
                                   initial='False',
                                   choices=(('False', 'No'), ('True', 'Yes')))
     chop = False   # Chopping (no longer used, should be False)
@@ -313,7 +313,7 @@ class GEMObservationForm(BaseRoboticObservationForm):
                            choices=(('20', '20%-tile'), ('50', '50%-tile'), ('80', '80%-tile'), ('Any', 'Any')))
     gssearch = forms.ChoiceField(initial='true',
                                  required=False,
-                                 label='Auto guide star search?',
+                                 label='Guide star search?',
                                  choices=(('true', 'Yes'), ('false', 'No')))
 
     def layout(self):
@@ -535,7 +535,10 @@ class GEMObservationForm(BaseRoboticObservationForm):
 
 class GEMFacility(BaseRoboticObservationFacility):
     name = 'GEM'
-    observation_types = [('OBSERVATION', 'Gemini Observation')]
+    observation_forms = {
+        'OBSERVATION': GEMObservationForm
+    }
+    # observation_types = [('OBSERVATION', 'Gemini Observation')]
 
     def get_form(self, observation_type):
         return GEMObservationForm
@@ -563,8 +566,8 @@ class GEMFacility(BaseRoboticObservationFacility):
             if observation_payload[0]['elevationType'] == 'airmass':
                 if float(observation_payload[0]['elevationMin']) < 1.0:
                     errors['elevationMin'] = 'Airmass must be >= 1.0'
-                if float(observation_payload[0]['elevationMax']) > 2.5:
-                    errors['elevationMax'] = 'Airmass must be <= 2.5'
+                if float(observation_payload[0]['elevationMax']) > 2.8:
+                    errors['elevationMax'] = 'Airmass must be <= 2.8'
 
         for payload in observation_payload:
             if 'error' in payload.keys():
