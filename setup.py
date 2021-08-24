@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='tom-gemini-community',
-    version='0.2.0',
+    version='0.3.0',
     author="Bryan Miller",
     author_email="millerwbryan@gmail.com",
     description="Gemini Observatory Community TOM Broker Modules",
