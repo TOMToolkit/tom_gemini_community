@@ -117,7 +117,7 @@ def obs_choices():
 
 def get_site(progid, location=False):
     values = progid.split('-')
-    gemloc = {'GS': 'Gemini South', 'GN': 'Gemini North'}
+    gemloc = {'GS': 'gemini_south', 'GN': 'gemini_north'}
     site = values[0].upper()
     if location:
         site = gemloc[site]
