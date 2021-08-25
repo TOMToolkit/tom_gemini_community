@@ -261,7 +261,9 @@ class GEMObservationForm(BaseRoboticObservationForm):
                                          ('PWFS1', 'PWFS1'),
                                          ('PWFS2', 'PWFS2'),
                                          ('AOWFS', 'AOWFS')))  # GS probe (PWFS1/PWFS2/OIWFS/AOWFS)
-    window_start = forms.CharField(required=False, widget=forms.TextInput(attrs={'type': 'date'}),
+    window_start = forms.CharField(required=False,
+                                   # widget=forms.TextInput(attrs={'type': 'date'}),
+                                   widget=forms.DateTimeInput(attrs={'type': 'datetime'}, format='%Y-%m-%d %H:%M:%S'),
                                    label='Timing Window')
     window_duration = forms.IntegerField(required=False, min_value=1, label='Window Duration [hr]')
 
@@ -273,7 +275,8 @@ class GEMObservationForm(BaseRoboticObservationForm):
                                         ('find', 'Set PA for brightest guide star'),
                                         ('parallactic', 'Parallactic Angle')))
     obsdate = forms.CharField(required=False,
-                              widget=forms.TextInput(attrs={'type': 'date'}),
+                              # widget=forms.TextInput(attrs={'type': 'date'}),
+                              widget=forms.DateTimeInput(attrs={'type': 'datetime'}, format='%Y-%m-%d %H:%M:%S'),
                               label='UT DateTime (Par)')
     # Eventually select instrument from obsid text?
     inst = forms.ChoiceField(required=False,
@@ -420,6 +423,7 @@ class GEMObservationForm(BaseRoboticObservationForm):
                     odate, otime = isodatetime(self.cleaned_data['obsdate'])
                     l_pa = parangle(str(ra), str(dec), odate, otime, l_site).value
                     l_pamode = 'flip'  # in case of guide star selection
+                    # print(str(ra), str(dec), odate, otime, l_pa, l_site)
 
             # Guide star
             overw = self.cleaned_data['overwrite'] == 'True'
